@@ -20,7 +20,7 @@ A multi-platform launcher for the **Yeoboe-xmd WhatsApp Bot** — built for stra
 <td align="center" width="50%">
   <b>Server 1 — Yeoboe Tech</b><br>
   <sub>Primary session service</sub><br><br>
-  <a href="https://Yeoboetechwebservice.zone.id/main">
+  <a href="https://davetechwebservice.zone.id/main">
     <img src="https://img.shields.io/badge/Open_Server_1-6f42c1?style=for-the-badge&logo=whatsapp&logoColor=white" alt="Open Server 1">
   </a>
 </td>
