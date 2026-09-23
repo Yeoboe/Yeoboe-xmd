@@ -361,13 +361,64 @@ async function getLoginMethod() {
     }
 }
 
+/**
+ * Session generators can append metadata after the credentials object.
+ * Baileys only needs the first complete JSON object for creds.json.
+ */
+function parseSessionCredentials(sessionData) {
+    const text = sessionData.toString('utf8');
+    const start = text.search(/\S/);
+
+    if (start === -1 || text[start] !== '{') {
+        throw new Error('decoded session data does not start with a JSON object');
+    }
+
+    let depth = 0;
+    let inString = false;
+    let escaped = false;
+
+    for (let index = start; index < text.length; index += 1) {
+        const character = text[index];
+
+        if (inString) {
+            if (escaped) {
+                escaped = false;
+            } else if (character === '\\') {
+                escaped = true;
+            } else if (character === '"') {
+                inString = false;
+            }
+            continue;
+        }
+
+        if (character === '"') {
+            inString = true;
+        } else if (character === '{') {
+            depth += 1;
+        } else if (character === '}') {
+            depth -= 1;
+            if (depth === 0) {
+                const credentials = JSON.parse(text.slice(start, index + 1));
+                if (!credentials || typeof credentials !== 'object' || Array.isArray(credentials)) {
+                    throw new Error('decoded session data is not a credentials object');
+                }
+                return credentials;
+            }
+        }
+    }
+
+    throw new Error('decoded session data does not contain a complete credentials object');
+}
+
 // --- Download session ---
 async function downloadSessionData() {
     try {
         await fs.promises.mkdir(sessionDir, { recursive: true });
         if (!fs.existsSync(credsPath) && global.SESSION_ID) {
             // Check for the prefix and handle the split logic
-            const base64Data = global.SESSION_ID.startsWith(SESSION_PREFIX) ? global.SESSION_ID.slice(SESSION_PREFIX.length) : global.SESSION_ID;
+            const base64Data = (global.SESSION_ID.startsWith(SESSION_PREFIX)
+                ? global.SESSION_ID.slice(SESSION_PREFIX.length)
+                : global.SESSION_ID).replace(/\s+/g, '');
             const sessionData = Buffer.from(base64Data, 'base64');
             // Older session strings encode buffers as `{ type: "Buffer", data: [] }`.
             // Current Baileys expects the same wrapper with base64 string data.
@@ -376,7 +427,7 @@ async function downloadSessionData() {
             // and the Noise handshake fails with a NaN buffer size.
             let credsData = sessionData;
             try {
-                const parsed = JSON.parse(sessionData.toString('utf8'));
+                const parsed = parseSessionCredentials(sessionData);
                 const normalizeLegacyBuffers = (value) => {
                     if (Array.isArray(value)) return value.map(normalizeLegacyBuffers);
                     if (!value || typeof value !== 'object') return value;
@@ -395,12 +446,15 @@ async function downloadSessionData() {
                 };
                 credsData = Buffer.from(JSON.stringify(normalizeLegacyBuffers(parsed)));
             } catch (parseError) {
-                log(`Session format normalization failed: ${parseError.message}`, 'red', true);
+                log(`SESSION_ID could not be decoded: ${parseError.message}. Bot is waiting for a valid session value.`, 'red', true);
+                return false;
             }
             await fs.promises.writeFile(credsPath, credsData);
             log(`Session successfully saved.`, 'green');
         }
+        return true;
     } catch (err) { log(`Error downloading session data: ${err.message}`, 'red', true); }
+    return false;
 }
 
 // --- Enhanced Request pairing code with retries ---
@@ -778,6 +832,11 @@ async function checkSessionIntegrityAndClean() {
  */
 function checkEnvStatus() {
     try {
+        if (!fs.existsSync(envPath)) {
+            log(' [ WATCHER ] Skipping .env watcher because no local .env file exists.', 'yellow');
+            return;
+        }
+
         log(` [ WATCHER ] .env... `, 'green');
         
         // Use persistent: false for better behavior in some hosting environments
@@ -853,7 +912,10 @@ async function tylor() {
         
         // 4b. Set global and download the new session file (creds.json) from the .env value.
         global.SESSION_ID = envSessionID;
-        await downloadSessionData(); 
+        const sessionDownloaded = await downloadSessionData();
+        if (!sessionDownloaded) {
+            return;
+        }
         await saveLoginMethod('session'); 
 
         // 4c. Start bot with the newly created session files
@@ -892,7 +954,10 @@ async function tylor() {
     let XeonBotInc;
 
     if (loginMethod === 'session') {
-        await downloadSessionData();
+        const sessionDownloaded = await downloadSessionData();
+        if (!sessionDownloaded) {
+            return;
+        }
         // Socket is only created AFTER session data is saved
         XeonBotInc = await startXeonBotInc(); 
     } else if (loginMethod === 'number') {
