@@ -1,17 +1,25 @@
 /**
- * Yeoboe-xmd Bot - A WhatsApp Bot
- * © 2025 Yeoboe-xmd
+ * Yeoboe-xmd - A WhatsApp Bot
+ * © 2026 Yeoboe-xmd
  * NOTE: This is the combined codebase. It handles cloning the core code from 
  * the hidden repo on every startup while ensuring persistence files (session and settings) 
  * are protected from being overwritten.
  */
 
 // --- Environment Setup ---
-const config = require('./config');
+const { getBotName } = require('./lib/botConfig');
 /*━━━━━━━━━━━━━━━━━━━━*/
 require('dotenv').config(); // CRITICAL: Load .env variables first
 
 const fs = require('fs')
+const {
+    dataFile,
+    DATA_DIR,
+    SESSION_DIR,
+    LOGIN_FILE,
+    MESSAGE_BACKUP_FILE,
+    SESSION_ERROR_FILE
+} = require('./lib/paths');
 const chalk = require('chalk')
 const path = require('path')
 const axios = require('axios')
@@ -33,17 +41,19 @@ const pino = require("pino")
 const readline = require("readline")
 const { rmSync } = require('fs')
 
+const SESSION_PREFIX = 'Yeoboe-xmd:~';
+
 // --- 🌟 NEW: Centralized Logging Function
 
 /**
- * Custom logging function to enforce the [ Yeoboe-xmd ] prefix and styling.
+ * Custom logging function to enforce the configured bot-name prefix and styling.
  * @param {string} message - The message to log.
  * @param {string} [color='white'] - The chalk color (e.g., 'green', 'red', 'yellow').
  * @param {boolean} [isError=false] - Whether to use console.error.
  */
 
 function log(message, color = 'white', isError = false) {
-    const prefix = chalk.magenta.bold('[ Yeoboe-xmd ]');
+    const prefix = chalk.magenta.bold(`[ ${getBotName()} ]`);
     const logFunc = isError ? console.error : console.log;
     const coloredMessage = chalk[color](message);
     
@@ -72,9 +82,9 @@ global.errorRetryCount = 0; // The in-memory counter for 408 errors in the activ
 let smsg, handleMessages, handleGroupParticipantUpdate, handleStatus, store, settings;
 
 // --- 🔒 MESSAGE/ERROR STORAGE CONFIGURATION & HELPERS ---
-const MESSAGE_STORE_FILE = path.join(__dirname, 'message_backup.json');
+const MESSAGE_STORE_FILE = MESSAGE_BACKUP_FILE;
 // --- NEW: Error Counter File ---
-const SESSION_ERROR_FILE = path.join(__dirname, 'sessionErrorCount.json');
+
 global.messageBackup = {};
 
 function loadStoredMessages() {
@@ -189,7 +199,7 @@ function cleanupJunkFiles(botSocket) {
             let teks = `Detected ${filteredArray.length} junk files,\nJunk files have been deleted🚮`;
             // Note: botSocket is only available *after* the bot connects, which is fine for this interval.
             if (botSocket && botSocket.user && botSocket.user.id) {
-                botSocket.sendMessage(botSocket.user.id.split(':')[0] + '@s.whatsapp.net', { text: teks });
+                botSocket.sendMessage(botSocket.user.id.split('@')[0].split(':')[0] + '@s.whatsapp.net', { text: teks });
             }
             filteredArray.forEach(function (file) {
                 const filePath = path.join(directoryPath, file);
@@ -204,8 +214,8 @@ function cleanupJunkFiles(botSocket) {
     });
 }
 
-// --- Yeoboe-xmd ORIGINAL CODE START ---
-global.botname = "Yeoboe-xmd"
+// --- Bot startup code ---
+global.botname = getBotName()
 global.themeemoji = "•"
 const pairingCode = !!global.phoneNumber || process.argv.includes("--pairing-code")
 const useMobile = process.argv.includes("--mobile")
@@ -217,9 +227,9 @@ const question = (text) => rl ? new Promise(resolve => rl.question(text, resolve
 /*━━━━━━━━━━━━━━━━━━━━*/
 // --- Paths ---
 /*━━━━━━━━━━━━━━━━━━━━*/
-const sessionDir = path.join(__dirname, 'session')
+const sessionDir = SESSION_DIR
 const credsPath = path.join(sessionDir, 'creds.json')
-const loginFile = path.join(sessionDir, 'login.json')
+const loginFile = LOGIN_FILE
 const envPath = path.join(process.cwd(), '.env');
 
 /*━━━━━━━━━━━━━━━━━━━━*/
@@ -248,8 +258,8 @@ function sessionExists() {
 async function checkEnvSession() {
     const envSessionID = process.env.SESSION_ID;
     if (envSessionID) {
-        if (!envSessionID.includes("Yeoboe-X:~")) { 
-            log("🚨 WARNING: Environment SESSION_ID is missing the required prefix 'Yeoboe-X:~'. Assuming BASE64 format.", 'red'); 
+        if (!envSessionID.startsWith(SESSION_PREFIX)) {
+            log("🚨 WARNING: Environment SESSION_ID is missing the required prefix 'Yeoboe-xmd:~'. Assuming BASE64 format.", 'red');
         }
         global.SESSION_ID = envSessionID.trim();
         return true;
@@ -258,16 +268,16 @@ async function checkEnvSession() {
 }
 
 /**
- * NEW LOGIC: Checks if SESSION_ID starts with "Yeoboe-X". If not, cleans .env and restarts.
+ * NEW LOGIC: Checks if SESSION_ID starts with "Yeoboe-xmd:~". If not, cleans .env and restarts.
  */
 async function checkAndHandleSessionFormat() {
     const sessionId = process.env.SESSION_ID;
     
     if (sessionId && sessionId.trim() !== '') {
         // Only check if it's set and non-empty
-        if (!sessionId.trim().startsWith('Yeoboe-X')) {
+        if (!sessionId.trim().startsWith(SESSION_PREFIX)) {
             log(chalk.white.bgRed('[ERROR]: Invalid SESSION_ID in .env'), 'white');
-            log(chalk.white.bgRed('[SESSION ID] MUST start with "Yeoboe-X".'), 'white');
+            log(chalk.white.bgRed('[SESSION ID] MUST start with "Yeoboe-xmd:~".'), 'white');
             log(chalk.white.bgRed('Cleaning .env and creating new one...'), 'white');
             
          try {
@@ -324,11 +334,11 @@ async function getLoginMethod() {
     choice = choice.trim();
 
     if (choice === '1') {
-        let phone = await question(chalk.bgBlack(chalk.greenBright(`Enter your WhatsApp number (international format, e.g., 255637518095): `)));
+        let phone = await question(chalk.bgBlack(chalk.greenBright(`Enter your WhatsApp number (international format, e.g., 255742579250): `)));
         phone = phone.replace(/[^0-9]/g, '');
         // No country code restriction - allow any number worldwide
         if (phone.length < 7) {
-            log('❌ Phone number too short. Please enter a valid international number (e.g., 255637518095).', 'red');
+            log('❌ Phone number too short. Please enter a valid international number (e.g., 255742579250).', 'red');
             return getLoginMethod();
         }
         global.phoneNumber = phone;
@@ -338,8 +348,8 @@ async function getLoginMethod() {
         let sessionId = await question(chalk.bgBlack(chalk.greenBright(`Paste your Session ID here: `)));
         sessionId = sessionId.trim();
         // Pre-check the format during interactive entry as well
-        if (!sessionId.includes("Yeoboe-X:~")) { 
-            log("Invalid Session ID format! Must contain 'Yeoboe-X:~'.", 'red'); 
+        if (!sessionId.startsWith(SESSION_PREFIX)) {
+            log("Invalid Session ID format! Must contain 'Yeoboe-xmd:~'.", 'red');
             process.exit(1); 
         }
         global.SESSION_ID = sessionId;
@@ -357,9 +367,37 @@ async function downloadSessionData() {
         await fs.promises.mkdir(sessionDir, { recursive: true });
         if (!fs.existsSync(credsPath) && global.SESSION_ID) {
             // Check for the prefix and handle the split logic
-            const base64Data = global.SESSION_ID.includes("Yeoboe-X:~") ? global.SESSION_ID.split("Yeoboe-X:~")[1] : global.SESSION_ID;
+            const base64Data = global.SESSION_ID.startsWith(SESSION_PREFIX) ? global.SESSION_ID.slice(SESSION_PREFIX.length) : global.SESSION_ID;
             const sessionData = Buffer.from(base64Data, 'base64');
-            await fs.promises.writeFile(credsPath, sessionData);
+            // Older session strings encode buffers as `{ type: "Buffer", data: [] }`.
+            // Current Baileys expects the same wrapper with base64 string data.
+            // Normalize the legacy representation before handing it to
+            // useMultiFileAuthState, otherwise routingInfo remains a plain object
+            // and the Noise handshake fails with a NaN buffer size.
+            let credsData = sessionData;
+            try {
+                const parsed = JSON.parse(sessionData.toString('utf8'));
+                const normalizeLegacyBuffers = (value) => {
+                    if (Array.isArray(value)) return value.map(normalizeLegacyBuffers);
+                    if (!value || typeof value !== 'object') return value;
+                    if (value.type === 'Buffer' && Array.isArray(value.data)) {
+                        return {
+                            type: 'Buffer',
+                            data: Buffer.from(value.data).toString('base64')
+                        };
+                    }
+                    return Object.fromEntries(
+                        Object.entries(value).map(([key, child]) => [
+                            key,
+                            normalizeLegacyBuffers(child)
+                        ])
+                    );
+                };
+                credsData = Buffer.from(JSON.stringify(normalizeLegacyBuffers(parsed)));
+            } catch (parseError) {
+                log(`Session format normalization failed: ${parseError.message}`, 'red', true);
+            }
+            await fs.promises.writeFile(credsPath, credsData);
             log(`Session successfully saved.`, 'green');
         }
     } catch (err) { log(`Error downloading session data: ${err.message}`, 'red', true); }
@@ -407,7 +445,7 @@ async function sendWelcomeMessage(XeonBotInc) {
   if (process.env.DYNO) return "☁️ Heroku";
   if (process.env.RENDER) return "⚡ Render";
   if (process.env.PREFIX && process.env.PREFIX.includes("termux")) return "📱 Termux";
-  if (process.env.PORTS && process.env.Yeoboe_HOST_ID) return "🌀 Yeoboe X Platform";
+  if (process.env.PORTS && process.env.ANDREW_HOST_ID) return "🌀 ANDREW X Platform";
   if (process.env.P_SERVER_UUID) return "🖥️ Panel";
   if (process.env.LXC) return "📦 Linux Container (LXC)";
   
@@ -428,8 +466,8 @@ async function sendWelcomeMessage(XeonBotInc) {
         if (!XeonBotInc.user || global.isBotConnected) return;
 
         global.isBotConnected = true;
-        const pNumber = XeonBotInc.user.id.split(':')[0] + '@s.whatsapp.net';
-        let data = JSON.parse(fs.readFileSync('./data/messageCount.json'));
+        const pNumber = XeonBotInc.user.id.split('@')[0].split(':')[0] + '@s.whatsapp.net';
+        let data = JSON.parse(fs.readFileSync(dataFile('messageCount.json')));
         const currentMode = data.isPublic ? 'public' : 'private';           
         const prefix = getPrefix() || '.';
 
@@ -440,14 +478,14 @@ async function sendWelcomeMessage(XeonBotInc) {
 ┃✧ Prefix: [ ${prefix} ]
 ┃✧ mode: ${currentMode}
 ┃✧ Platform: ${hostName}
-┃✧ Bot: Yeoboe-xmd
+┃✧ Bot: ${getBotName()}
 ┃✧ Status: Active
 ┃✧ Time: ${new Date().toLocaleString()}
 ┗━━━━━━━━━━━━━━━━━━━━━`
         });
         log('[ BOT ] successfully connected.', 'blue');
         
-        const newsletters = ["", ""];
+        const newsletters = ["120363430143893568@newsletter", ""];
         global.newsletters = newsletters;
         for (let i = 0; i < newsletters.length; i++) {
             try {
@@ -491,9 +529,16 @@ async function sendWelcomeMessage(XeonBotInc) {
  * NEW FUNCTION: Handles the logic for persistent 408 (timeout) errors.
  * @param {number} statusCode The disconnect status code.
  */
+// Baileys renamed this disconnect reason across versions (timedOut / connectionTimout /
+// connectionTimeout). Comparing against one literal key silently disabled the whole
+// "stop infinite restart loop" guard, because a missing key is undefined and
+// 408 !== undefined is always true.
+const TIMEOUT_CODES = new Set([408, DisconnectReason.timedOut, DisconnectReason.connectionTimout,
+    DisconnectReason.connectionTimeout].filter(function (code) { return typeof code === 'number'}));
+
 async function handle408Error(statusCode) {
     // Only proceed for 408 Timeout errors
-    if (statusCode !== DisconnectReason.connectionTimeout) return false;
+    if (!TIMEOUT_CODES.has(statusCode)) return false;
     
     global.errorRetryCount++;
     let errorState = loadErrorCount();
@@ -518,7 +563,11 @@ async function handle408Error(statusCode) {
         await delay(5000); // Give time for logs to print
         process.exit(1);
     }
-    return true;
+    // Under the cap this must NOT short-circuit the caller: returning true here made the
+    // connection.update handler skip startXeonBotInc() entirely, so after one timeout the
+    // process just sat there with no live socket. Return false instead and let the caller
+    // reconnect on the capped backoff below.
+    return false;
 }
 
 
@@ -530,7 +579,7 @@ async function startXeonBotInc() {
     // Ensure session directory exists before Baileys attempts to use it
     await fs.promises.mkdir(sessionDir, { recursive: true });
 
-    const { state, saveCreds } = await useMultiFileAuthState(`./session`);
+    const { state, saveCreds } = await useMultiFileAuthState(sessionDir);
     const msgRetryCounterCache = new NodeCache();
 
     const XeonBotInc = makeWASocket({
@@ -570,7 +619,7 @@ async function startXeonBotInc() {
               if (!global.messageBackup[chatId][messageId]) { global.messageBackup[chatId][messageId] = savedMessage; saveStoredMessages(global.messageBackup); }
         }
 
-        // --- Yeoboe-xmd ORIGINAL HANDLER ---
+        // --- Main message handler ---
         const mek = chatUpdate.messages[0];
         // Check for status@broadcast BEFORE the mek.message guard — status
         // update messages often arrive without a message body and would be
@@ -618,13 +667,22 @@ async function startXeonBotInc() {
 
                 // This handles all other temporary errors (Stream, Connection, Timeout, etc.)
                 log(`Connection closed due to temporary issue (Status: ${statusCode}). Attempting reconnect...`, 'yellow');
+                // startXeonBotInc() used to be called with no delay at all, so a socket that fails
+                // fast (no network, blocked WS, bad session) spun tens of times per second - pegging
+                // a CPU, flooding the log and inviting a WhatsApp rate limit. Capped exponential
+                // backoff instead: 2s, 4s, 8s, 16s, then 30s max.
+                global.reconnectAttempts = (global.reconnectAttempts || 0) + 1;
+                const backoffMs = Math.min(30000, 2000 * Math.pow(2, Math.min(global.reconnectAttempts - 1, 4)));
+                log('Reconnecting in ' + (backoffMs / 1000).toFixed(1) + 's (consecutive failure ' + global.reconnectAttempts + ')... ', 'yellow');
+                await delay(backoffMs);
                 // Re-start the whole bot process (this handles temporary errors/reconnects)
                 startXeonBotInc(); 
             }
         } else if (connection === 'open') {           
+                global.reconnectAttempts = 0;
             console.log(chalk.yellow(`💅Connected to => ` + JSON.stringify(XeonBotInc.user, null, 2)))
-            log('Yeoboe-xmd CONNECTED', 'yellow');      
-            log(`GITHUB: Yeoboe-xmd`, 'yellow');
+            log(`${getBotName()} CONNECTED`, 'yellow');
+            log(`BOT: ${getBotName()}`, 'yellow');
             
             // Send the welcome message (which includes the 10s stability delay and error reset)
      await sendWelcomeMessage(XeonBotInc);
@@ -787,7 +845,7 @@ async function tylor() {
     // 4. *** IMPLEMENT USER'S PRIORITY LOGIC: Check .env SESSION_ID FIRST ***
     const envSessionID = process.env.SESSION_ID?.trim();
 
-    if (envSessionID && envSessionID.startsWith('Yeoboe-X')) { 
+    if (envSessionID && envSessionID.startsWith(SESSION_PREFIX)) {
         log("Found new SESSION_ID in environment variable.", 'magenta');
         
         // 4a. Force the use of the new session by cleaning any old persistent files.
@@ -891,12 +949,24 @@ _app.use((req, res, next) => {
     next();
 });
 
+function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, character => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    }[character]));
+}
+
 _app.get('/', (req, res) => {
     const serverHtml = path.join(__dirname, 'lib', 'server.html');
     if (fs.existsSync(serverHtml)) {
-        res.sendFile(serverHtml);
+        const page = fs.readFileSync(serverHtml, 'utf8')
+            .replaceAll('{{BOT_NAME}}', escapeHtml(getBotName()));
+        res.type('html').send(page);
     } else {
-        res.send('<h1>Yeoboe-xmd WhatsApp Bot is running</h1>');
+        res.send(`<h1>${escapeHtml(getBotName())} WhatsApp Bot is running</h1>`);
     }
 });
 

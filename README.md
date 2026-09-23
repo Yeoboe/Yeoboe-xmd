@@ -1,69 +1,77 @@
 # Yeoboe-xmd
 
-A multi-platform launcher for the **Yeoboe-xmd WhatsApp Bot** — built for straightforward deployment and always-on operation.
-
 <p align="center">
-  <a href="https://github.com/Yeoboe/Yeoboe-xmd">
-    <img src="https://img.shields.io/badge/GitHub-Yeoboe%2FYeoboe--xmd-181717?style=for-the-badge&logo=github" alt="GitHub">
-  </a>
-  <a href="https://github.com/Yeoboe/Yeoboe-xmd/archive/refs/heads/main.zip">
-    <img src="https://img.shields.io/badge/Download-ZIP-2ea44f?style=for-the-badge&logo=github" alt="Download ZIP">
-  </a>
+  <strong>Fast WhatsApp automation for groups, media, AI, and everyday utilities.</strong>
 </p>
 
----
+<p align="center">
+  <a href="https://issahbugxsession.onrender.com/"><img src="https://img.shields.io/badge/PAIR_CODE-OPEN-52525B?style=for-the-badge&labelColor=18181B&logo=whatsapp&logoColor=F4F4F5" alt="Open Pair Code"></a>
+  <a href="https://github.com/Yeoboe/Yeoboe-xmd"><img src="https://img.shields.io/badge/REPOSITORY-YEOBOE--XMD-52525B?style=for-the-badge&labelColor=18181B&logo=github&logoColor=F4F4F5" alt="Yeoboe-xmd repository"></a>
+  <a href="https://github.com/Yeoboe/Yeoboe-xmd/fork"><img src="https://img.shields.io/badge/FORK-OPEN-52525B?style=for-the-badge&labelColor=18181B&logo=github&logoColor=F4F4F5" alt="Fork repository"></a>
+  <a href="https://github.com/Yeoboe/Yeoboe-xmd/archive/refs/heads/main.zip"><img src="https://img.shields.io/badge/DOWNLOAD-ZIP-52525B?style=for-the-badge&labelColor=18181B&logo=github&logoColor=F4F4F5" alt="Download ZIP"></a>
+</p>
 
-## 🌐 Session Servers
+## Deployment platforms
 
-<table>
-<tr>
-<td align="center" width="50%">
-  <b>Server 1 — Yeoboe Tech</b><br>
-  <sub>Primary session service</sub><br><br>
-  <a href="https://davetechwebservice.zone.id/main">
-    <img src="https://img.shields.io/badge/Open_Server_1-6f42c1?style=for-the-badge&logo=whatsapp&logoColor=white" alt="Open Server 1">
-  </a>
-</td>
-<td align="center" width="50%">
-  <b>Server 2 — Render</b><br>
-  <sub>Backup session service</sub><br><br>
-  <a href="https://session-incr.onrender.com/">
-    <img src="https://img.shields.io/badge/Open_Server_2-6f42c1?style=for-the-badge&logo=whatsapp&logoColor=white" alt="Open Server 2">
-  </a>
-</td>
-</tr>
-</table>
-
----
-
-## 🚀 One-Click Deploy
-
-| Platform | Deploy |
+| Platform | Link |
 |---|---|
-| **Heroku** | [Deploy to Heroku](https://www.heroku.com/deploy?template=https%3A%2F%2Fgithub.com%2FYeoboe%2FYeoboe-xmd%2Ftree%2Fmain) |
-| **Render** | [Deploy on Render](https://render.com/deploy?repo=https://github.com/Yeoboe/Yeoboe-xmd) |
-| **Railway** | [Deploy on Railway](https://railway.app/new/template?template=https://github.com/Yeoboe/Yeoboe-xmd) |
-| **Koyeb** | [Deploy on Koyeb](https://app.koyeb.com/deploy?type=git&repository=github.com/Yeoboe/Yeoboe-xmd) |
-| **Replit** | [Open in Replit](https://replit.com/github/Yeoboe/Yeoboe-xmd) |
+| [![Heroku](https://img.shields.io/badge/HEROKU-DEPLOY-52525B?style=flat-square&labelColor=18181B&logo=heroku&logoColor=F4F4F5)](https://heroku.com/deploy?template=https://github.com/Yeoboe/Yeoboe-xmd/tree/main) | `app.json` + `heroku.yml` + `Dockerfile`. |
+| [![Replit](https://img.shields.io/badge/REPLIT-IMPORT-52525B?style=flat-square&labelColor=18181B&logo=replit&logoColor=F4F4F5)](https://replit.com/github/Yeoboe/Yeoboe-xmd) | `.replit` runs `npm start`. |
+| [![Koyeb](https://img.shields.io/badge/KOYEB-DEPLOY-52525B?style=flat-square&labelColor=18181B&logo=koyeb&logoColor=F4F4F5)](https://app.koyeb.com/deploy?type=git&repository=github.com/Yeoboe/Yeoboe-xmd) | GitHub deploy with `Dockerfile`. |
+| [![Railway](https://img.shields.io/badge/RAILWAY-DEPLOY-52525B?style=flat-square&labelColor=18181B&logo=railway&logoColor=F4F4F5)](https://railway.app/new/template?template=https://github.com/Yeoboe/Yeoboe-xmd) | `railway.json` + `Dockerfile`. |
+| [![Render](https://img.shields.io/badge/RENDER-DEPLOY-52525B?style=flat-square&labelColor=18181B&logo=render&logoColor=F4F4F5)](https://render.com/deploy?repo=https://github.com/Yeoboe/Yeoboe-xmd) | `render.yaml` background worker + `Dockerfile`. |
+| [![Netlify](https://img.shields.io/badge/NETLIFY-WEB_ONLY-52525B?style=flat-square&labelColor=18181B&logo=netlify&logoColor=F4F4F5)](https://app.netlify.com/start/deploy?repository=https://github.com/Yeoboe/Yeoboe-xmd) | Web components only; not the persistent bot worker. |
+| [![Katabump](https://img.shields.io/badge/KATABUMP-OPEN-52525B?style=flat-square&labelColor=18181B&logo=cloudflare&logoColor=F4F4F5)](https://dashboard.katabump.com/auth/login#ce51a9) | Open the Katabump deployment dashboard. |
+| [![DigitalOcean](https://img.shields.io/badge/DIGITALOCEAN-APP_PLATFORM-52525B?style=flat-square&labelColor=18181B&logo=digitalocean&logoColor=F4F4F5)](https://cloud.digitalocean.com/apps/new) | App Platform deploy with `Dockerfile`. |
+| [![Fly.io](https://img.shields.io/badge/FLY.IO-DOCKER_GUIDE-52525B?style=flat-square&labelColor=18181B&logo=flydotio&logoColor=F4F4F5)](https://fly.io/docs/languages-and-frameworks/dockerfile/) | `fly launch` detects the `Dockerfile`. |
+| [![Northflank](https://img.shields.io/badge/NORTHFLANK-GUIDE-52525B?style=flat-square&labelColor=18181B&logo=northflank&logoColor=F4F4F5)](https://northflank.com/docs/v1/application/infrastructure-as-code/use-github-actions-with-northflank) | GitHub workflow with the `Dockerfile`. |
+| [![Zeabur](https://img.shields.io/badge/ZEABUR-GITHUB-52525B?style=flat-square&labelColor=18181B&logo=github&logoColor=F4F4F5)](https://zeabur.com/docs/en-US/deploy/methods/github-integration) | GitHub integration with `Dockerfile`. |
+| [![Azure](https://img.shields.io/badge/AZURE-CONTAINER_APPS-52525B?style=flat-square&labelColor=18181B&logo=microsoftazure&logoColor=F4F4F5)](https://learn.microsoft.com/en-us/azure/container-apps/github-actions) | GitHub Actions deploys the `Dockerfile`. |
 
----
+## Deployment files
 
-## ⚙️ Setup
+The repository includes `app.json`, `heroku.yml`, `Dockerfile`, `render.yaml`, `railway.json`, and `.replit`.
 
-**Required environment variable:**
+## Setup
 
-| Variable | Required | Description |
-|---|---:|---|
-| `SESSION_ID` | ✅ Yes | Your Yeoboe-xmd session credential. Must begin with `Yeoboe-xmd:~`. |
-
-For local hosting, place it in a `.env` file at the project root. **Never commit credentials** to GitHub or share them in a ZIP.
-
----
-
-## 💻 Local Run
-
-```bash
-git clone https://github.com/Yeoboe/Yeoboe-xmd.git
-cd Yeoboe
-npm install --legacy-peer-deps
+npm install
 npm start
+
+Set the required SESSION_ID environment variable. The root app.json, Dockerfile, and heroku.yml are included for container deployment. Use .menu in WhatsApp to view the command catalogue.
+
+Bot owner: `255742579250`
+WhatsApp invite: `https://chat.whatsapp.com/GO7V7oGqjGfEHjcnYOs9DU`
+Newsletter: `120363430143893568@newsletter`
+
+## Examples
+
+.menu
+.ping
+.tosgroup Group announcement
+.tourl
+.sticker
+.play song name
+
+## Features
+
+- Group management, moderation, protection, and member tools.
+- Text, image, video, audio, document, and sticker utilities.
+- Music, video, AI, lyrics, sports, anime, search, games, and automation tools.
+- Auto-read, auto-react, auto-typing, auto-recording, chatbot, anti-delete, and anti-edit modes.
+- Group-status posting through .tosgroup and its active aliases.
+
+## Tutorial
+
+[![WATCH_DEPLOYMENT_TUTORIAL](https://img.shields.io/badge/WATCH_DEPLOYMENT_TUTORIAL-OPEN-52525B?style=for-the-badge&labelColor=18181B&logo=youtube&logoColor=F4F4F5)](https://youtu.be/wJKMV0BSqpE?si=6Y11rPD0t2ykoxB8)
+
+## Official project
+
+[![OPEN_YEOBOE--XMD](https://img.shields.io/badge/OPEN-YEOBOE--XMD-52525B?style=for-the-badge&labelColor=18181B&logo=github&logoColor=F4F4F5)](https://github.com/Yeoboe/Yeoboe-xmd)
+
+Maintained and branded by Yeoboe.
+
+## Security
+
+Never publish WhatsApp authentication state, session strings, access tokens, API keys, .env files, databases, logs, or runtime directories.
+
+© 2026 Yeoboe. All rights reserved.

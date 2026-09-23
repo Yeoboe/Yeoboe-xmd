@@ -2,6 +2,7 @@
 // help.js - Enhanced version with integrated functions
 const settings = require('../settings');
 const fs = require('fs');
+const { dataFile, DATA_DIR } = require('../lib/paths');
 const path = require('path');
 const os = require('os');
 const { getMenuStyle, getMenuSettings, MENU_STYLES } = require('./menuSettings');
@@ -76,7 +77,7 @@ const generateMenu = (pushname, currentMode, hostName, ping, uptimeFormatted, pr
     let newOwner = getOwnerName();
     const menuSettings = getMenuSettings();
     
-    let menu = `┏❐  *❴ JUNE - X BOT ❵* ❐\n`;
+    let menu = `┏❐  *❴ ${getBotName()} ❵* ❐\n`;
     menu += `┃➥ *User:* ${pushname}\n`;
     menu += `┃➥ *Owner:* ${newOwner}\n`;
     menu += `┃➥ *Mode:* ${currentMode}\n`;
@@ -183,7 +184,7 @@ async function sendMenuWithStyle(sock, chatId, message, menulist, menustyle, thu
     const botname = getBotName();
     const ownername = pushname;
     const tylorkids = thumbnailBuffer; // Fixed: using thumbnails from assets
-    const plink = "https://github.com/Yeoboe";
+    const plink = "https://github.com/vinpink2";
 
     if (menustyle === '1') {
         await sock.sendMessage(chatId, {
@@ -285,7 +286,7 @@ async function helpCommand(sock, chatId, message) {
 
     console.log('Current menu style:', menuStyle);
 
-    let data = JSON.parse(fs.readFileSync('./data/messageCount.json'));
+    let data = JSON.parse(fs.readFileSync(dataFile('messageCount.json')));
     
     // Create fake contact for enhanced reply
     const fkontak = createFakeContact(message);
@@ -307,10 +308,7 @@ async function helpCommand(sock, chatId, message) {
     // Random thumbnail selection from local files
     const thumbnailFiles = [
         'menu1.jpg',
-        'menu2.jpg', 
-        'menu3.jpg',
-        'menu4.jpg',
-        'menu5.jpg'
+        'menu3.jpg'
     ];
     const randomThumbFile = thumbnailFiles[Math.floor(Math.random() * thumbnailFiles.length)];
     const thumbnailPath = path.join(__dirname, '../assets', randomThumbFile);

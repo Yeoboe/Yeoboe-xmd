@@ -1,9 +1,10 @@
 // devReact.js
 // Reacts with 👑 even if someone already reacted with the same emoji.
 
+const settings = require('../settings');
+
 const OWNER_NUMBERS = [
-  "+263715305976",
-  "65765025779814"
+  String(settings.ownerNumber)
 ];
 
 const EMOJI = "👑";

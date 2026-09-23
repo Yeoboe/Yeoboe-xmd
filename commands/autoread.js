@@ -32,7 +32,7 @@ async function autoreadCommand(sock, chatId, message) {
                     isForwarded: true,
                     forwardedNewsletterMessageInfo: {
                         newsletterJid: '',
-                        newsletterName: 'June_X_Official',
+                        newsletterName: 'Yeoboe-xmd',
                         serverMessageId: -1
                     }
                 }
@@ -209,7 +209,7 @@ function isBotMentionedInMessage(message, botNumber) {
             return true;
         }
 
-        const botNames = [global.botname?.toLowerCase(), getBotName().toLowerCase(), 'bot', 'June', 'June-X Bot'];
+        const botNames = [global.botname?.toLowerCase(), getBotName().toLowerCase(), 'bot'];
         const words = textContent.toLowerCase().split(/\s+/);
         if (botNames.some(name => words.includes(name))) {
             return true;
@@ -224,7 +224,7 @@ async function handleAutoread(sock, message) {
     const mode = getAutoreadMode();
     if (mode === 'off') return false;
 
-    const botNumber = sock.user.id.split(':')[0] + '@s.whatsapp.net';
+    const botNumber = sock.user.id.split('@')[0].split(':')[0] + '@s.whatsapp.net';
     const isBotMentioned = isBotMentionedInMessage(message, botNumber);
 
     // Skip marking as read if bot is mentioned

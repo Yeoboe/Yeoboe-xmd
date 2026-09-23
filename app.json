@@ -1,6 +1,6 @@
 {
   "name": "Yeoboe-xmd",
-  "description": "Yeoboe-xmd - WhatsApp MD Multi-Device Bot powered by Baileys",
+  "description": "Yeoboe-xmd WhatsApp MD Multi-Device Bot powered by Baileys",
   "repository": "https://github.com/Yeoboe/Yeoboe-xmd",
   "logo": "",
   "keywords": [
@@ -9,7 +9,7 @@
     "bot",
     "node",
     "md",
-    "Yeoboe-xmd"
+    "yeoboe-xmd"
   ],
   "stack": "heroku-26",
   "buildpacks": [
@@ -25,7 +25,7 @@
   },
   "env": {
     "SESSION_ID": {
-      "description": "Yeoboe-xmd  session token (Yeoboe-x~...) — get yours on the pairing site",
+      "description": "Yeoboe-xmd session token — get yours on the pairing page",
       "required": true,
       "value": ""
     }

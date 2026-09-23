@@ -1,42 +1,22 @@
-# syntax=docker/dockerfile:1
-#
-# Yeoboe-xmd (loader distribution) — container image.
-# Node 20 is pinned on purpose: better-sqlite3 11.10.0 is validated on it.
-# Do not bump the major without retesting the native build.
-#
-# NOTE: this image ships only the LOADER. At startup it downloads the real
-# bot source (REPO_URL, overridable via env) into node_modules/xsqlite3/
-# and runs it from there; the bot's require() calls resolve against this
-# image's node_modules.
-
+# Referenced by `npm run docker:build`; the repo shipped docker scripts with no Dockerfile.
 FROM node:20-bookworm-slim
 
-# Compiler toolchain as a fallback for better-sqlite3 when its prebuilt
-# binary cannot be downloaded. ffmpeg itself comes from ffmpeg-static (npm).
+# ffmpeg is invoked via spawn('ffmpeg', ...) in lib/sticker.js and fluent-ffmpeg
 RUN apt-get update \
- && apt-get install -y --no-install-recommends python3 make g++ ca-certificates \
+ && apt-get install -y --no-install-recommends ffmpeg ca-certificates \
  && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Dependencies in their own layer so source edits don't reinstall everything.
-# No lockfile by design (this distribution resolves at build time).
-COPY package.json ./
-RUN npm install --omit=dev --no-audit --no-fund
+# Install before copying source so dependency layers stay cached
+COPY package*.json ./
+RUN npm install --omit=dev --legacy-peer-deps --no-audit --no-fund
 
-# Loader source (see .dockerignore for what is excluded).
 COPY . .
 
-# The loader writes to /app at runtime (.env, .update-backup) and creates
-# node_modules/xsqlite3/core0..core4/lib_signals/ for the downloaded bot,
-# so the entire workdir — node_modules included — must be owned by the
-# runtime user. Never run as root.
-RUN chown -R node:node /app
-USER node
+# Session and mutable state must live outside the image layer
+ENV NODE_ENV=production
+VOLUME ["/app/session", "/app/data"]
 
-# The loader itself binds nothing; the downloaded bot starts a keep-alive
-# status server on $PORT (fallbacks 5000/3000/8000/4000). EXPOSE documents
-# the default for platforms that auto-detect.
-EXPOSE 5000
-
+# index.js reads SESSION_ID from the environment; without it the bot expects a TTY for QR.
 CMD ["node", "index.js"]
