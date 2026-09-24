@@ -12,9 +12,9 @@
 
 <p align="center">
   <a href="https://yeoboe-xmdpair.onrender.com/"><img src="https://img.shields.io/badge/PAIR_CODE-OPEN-52525B?style=for-the-badge&labelColor=18181B&logo=whatsapp&logoColor=F4F4F5" alt="Open Pair Code"></a>
-  <a href="https://github.com/Yeoboe/Yeoboe-xmd"><img src="https://img.shields.io/badge/REPOSITORY-YEOBOE--XMD-52525B?style=for-the-badge&labelColor=18181B&logo=github&logoColor=F4F4F5" alt="Yeoboe-xmd repository"></a>
-  <a href="https://github.com/Yeoboe/Yeoboe-xmd/fork"><img src="https://img.shields.io/badge/FORK-OPEN-52525B?style=for-the-badge&labelColor=18181B&logo=github&logoColor=F4F4F5" alt="Fork repository"></a>
-  <a href="https://github.com/Yeoboe/Yeoboe-xmd/archive/refs/heads/main.zip"><img src="https://img.shields.io/badge/DOWNLOAD-ZIP-52525B?style=for-the-badge&labelColor=18181B&logo=github&logoColor=F4F4F5" alt="Download ZIP"></a>
+  <a 🪐href="https://github.com/Yeoboe/Yeoboe-xmd"><img src="https://img.shields.io/badge/REPOSITORY-YEOBOE--XMD-52525B?style=for-the-badge&labelColor=18181B&logo=github&logoColor=F4F4F5" alt="Yeoboe-xmd repository"></a>
+  <a 🪐href="https://github.com/Yeoboe/Yeoboe-xmd/fork"><img src="https://img.shields.io/badge/FORK-OPEN-52525B?style=for-the-badge&labelColor=18181B&logo=github&logoColor=F4F4F5" alt="Fork repository"></a>
+  <a 🪐href="https://github.com/Yeoboe/Yeoboe-xmd/archive/refs/heads/main.zip"><img src="https://img.shields.io/badge/DOWNLOAD-ZIP-52525B?style=for-the-badge&labelColor=18181B&logo=github&logoColor=F4F4F5" alt="Download ZIP"></a>
 </p>
 
 ## Deployment platforms
