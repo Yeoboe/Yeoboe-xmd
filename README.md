@@ -1,8 +1,6 @@
 # Yeoboe-xmd
 <a><img src='https://i.imgur.com/LyHic3i.gif'/></a><a>
-<a><img src='https://i.imgur.com/LyHic3i.gif'/></a><a>
-<a><img
-scr="https://readme-typing-svg.demolab.com?font=Rockwell&size=50&pause=1000&color=33ff00&center=true&width=910&height=100&lines=Yeoboe-xmd🪐
+a><img src='https://i.imgur.com/LyHic3i.gif'/></a><a><img
 
 <p align="center">
   <strong>Fast WhatsApp automation for groups, media, AI, and everyday utilities.</strong>
