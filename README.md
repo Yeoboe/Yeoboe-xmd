@@ -1,5 +1,5 @@
 # Yeoboe-xmd
-<a><img src='https://i.imgur.com/LyHic3i.gif'/></a><a><img src='https://i.imgur.com/LyHic3i.gif'/></a><a><
+<a><img src='https://i.imgur.com/LyHic3i.gif'/></a><a><img src='https://i.imgur.com/LyHic3i.gif'/></a><a>
 
 <p align="center">
   <strong>Fast WhatsApp automation for groups, media, AI, and everyday utilities.</strong>
