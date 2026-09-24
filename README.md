@@ -1,7 +1,6 @@
 # Yeoboe-xmd
 <a><img src='https://i.imgur.com/LyHic3i.gif'/></a><a><img src='https://i.imgur.com/LyHic3i.gif'/></a><a>
-div align="center"> 
-<strong>Yeoboe-xmd</strong>
+</strong>
     <br>
   <a href="https://git.io/typing-svg"> 
     <img src="https://readme-typing-svg.demolab.com?font=Rockwell&size=50&pause=1000&color=33ff00&center=true&width=910&height=100&lines=Yeoboe-xmd;Multi+Device+Whatsapp+Bot;Made+by+Yeoboe" alt="Typing SVG" />
