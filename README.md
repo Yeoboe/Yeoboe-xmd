@@ -5,7 +5,7 @@
   <a href="https://git.io/typing-svg"> 
     <img src="https://readme-typing-svg.demolab.com?font=Rockwell&size=50&pause=1000&color=33ff00&center=true&width=910&height=100&lines=Yeoboe-xmd;Multi+Device+Whatsapp+Bot;Made+by+Yeoboe" alt="Typing SVG" />
   </a>
-
+><img src="https://i.postimg.cc/v8KHZB0k/1788990737756.png"/>  
 <p align="center">
   <strong>Fast WhatsApp automation for groups, media, AI, and everyday utilities.</strong>
 </p>
