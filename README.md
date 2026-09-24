@@ -5,16 +5,17 @@
   <a href="https://git.io/typing-svg"> 
     <img src="https://readme-typing-svg.demolab.com?font=Rockwell&size=50&pause=1000&color=33ff00&center=true&width=910&height=100&lines=Yeoboe-xmd;Multi+Device+Whatsapp+Bot;Made+by+Yeoboe" alt="Typing SVG" />
   </a>
-><img src="https://i.postimg.cc/v8KHZB0k/1788990737756.png"/>  
+><img src="https://i.postimg.cc/v8KHZB0k/1788990737756.png"/> 
+a><img src='https://i.imgur.com/LyHic3i.gif'/></a><a><img 
 <p align="center">
   <strong>Fast WhatsApp automation for groups, media, AI, and everyday utilities.</strong>
 </p>
 
 <p align="center">
   <a href="https://yeoboe-xmdpair.onrender.com/"><img src="https://img.shields.io/badge/PAIR_CODE-OPEN-52525B?style=for-the-badge&labelColor=18181B&logo=whatsapp&logoColor=F4F4F5" alt="Open Pair Code"></a>
-  <a 🪐href="https://github.com/Yeoboe/Yeoboe-xmd"><img src="https://img.shields.io/badge/REPOSITORY-YEOBOE--XMD-52525B?style=for-the-badge&labelColor=18181B&logo=github&logoColor=F4F4F5" alt="Yeoboe-xmd repository"></a>
-  <a 🪐href="https://github.com/Yeoboe/Yeoboe-xmd/fork"><img src="https://img.shields.io/badge/FORK-OPEN-52525B?style=for-the-badge&labelColor=18181B&logo=github&logoColor=F4F4F5" alt="Fork repository"></a>
-  <a 🪐href="https://github.com/Yeoboe/Yeoboe-xmd/archive/refs/heads/main.zip"><img src="https://img.shields.io/badge/DOWNLOAD-ZIP-52525B?style=for-the-badge&labelColor=18181B&logo=github&logoColor=F4F4F5" alt="Download ZIP"></a>
+  <a href="https://github.com/Yeoboe/Yeoboe-xmd"><img src="https://img.shields.io/badge/REPOSITORY-YEOBOE--XMD-52525B?style=for-the-badge&labelColor=18181B&logo=github&logoColor=F4F4F5" alt="Yeoboe-xmd repository"></a>
+  <a href="https://github.com/Yeoboe/Yeoboe-xmd/fork"><img src="https://img.shields.io/badge/FORK-OPEN-52525B?style=for-the-badge&labelColor=18181B&logo=github&logoColor=F4F4F5" alt="Fork repository"></a>
+  <a href="https://github.com/Yeoboe/Yeoboe-xmd/archive/refs/heads/main.zip"><img src="https://img.shields.io/badge/DOWNLOAD-ZIP-52525B?style=for-the-badge&labelColor=18181B&logo=github&logoColor=F4F4F5" alt="Download ZIP"></a>
 </p>
 
 ## Deployment platforms
