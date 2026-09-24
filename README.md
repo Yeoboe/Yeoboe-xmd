@@ -7,6 +7,7 @@
   </a>
 ><img src="https://i.postimg.cc/v8KHZB0k/1788990737756.png"/> 
 ><img src='https://i.imgur.com/LyHic3i.gif'/></a><a><img 
+><img src='https://i.imgur.com/LyHic3i.gif'/></a><a><img
 <p align="center">
   <strong>Fast WhatsApp automation for groups, media, AI, and everyday utilities.</strong>
 </p>
